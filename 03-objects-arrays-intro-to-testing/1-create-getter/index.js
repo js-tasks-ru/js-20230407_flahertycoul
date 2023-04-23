@@ -10,7 +10,7 @@ export function createGetter(path) {
     let value = obj;
 
     for (let item of pathArr) {
-      if (!result) { return; }
+      if (!value) { return; }
 
       value = value[item];
     }
