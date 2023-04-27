@@ -6,14 +6,13 @@ export default class ColumnChart {
     label = "",
     value = 0,
     link = "",
-    formatHeading = data => data,
+    formatHeading = (data) => data,
   } = {}) {
     this.data = data;
     this.label = label;
     this.value = value;
     this.link = link;
     this.formatHeading = formatHeading;
-
     this.render();
   }
 
