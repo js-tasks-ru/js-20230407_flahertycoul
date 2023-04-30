@@ -1,7 +1,6 @@
 export default class NotificationMessage {
   static activeMessage
 
-
   constructor(message = '',
     {
       duration = 100000,
@@ -41,7 +40,6 @@ export default class NotificationMessage {
     if (NotificationMessage.activeMessage) {
       NotificationMessage.activeMessage.remove();
     }
-    this.countdown();
 
 
     parent.append(this.element);
