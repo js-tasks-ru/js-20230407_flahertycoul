@@ -20,7 +20,7 @@ export default class NotificationMessage {
           <div class="inner-wrapper">
             <div class="notification-header">${this.type}</div>
             <div class="notification-body">
-              ${this.message}фывф
+              ${this.message}
               ${this.seconds}s
             </div>
           </div>
