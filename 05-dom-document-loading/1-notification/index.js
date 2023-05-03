@@ -50,17 +50,14 @@ export default class NotificationMessage {
     NotificationMessage.activeMessage = this;
   }
 
-
-
-  update() {
-    this.render();
-  }
-
   remove() {
-    this.element.remove();
+    if (this.element) {
+      this.element.remove();
+    }
   }
 
   destroy() {
     this.remove();
+    NotificationMessage.activeMessage = null;
   }
 }
