@@ -25,10 +25,11 @@ export default class SortableTable {
     `;
   }
 
-  getTemplateBody() {
+  getTemplateBody(sortedList) {
+    const listMap = sortedList ? sortedList : this.data;
     return `
     <div data-element="body" class="sortable-table__body">
-      ${this.data.map((item) => this.getBodyItem(item)).join('')}
+      ${listMap.map((item) => this.getBodyItem(item)).join('')}
     </div>
     `;
   }
@@ -50,6 +51,8 @@ export default class SortableTable {
 
   sort(fieldValue, orderValue) {
     const sortedList = this.sortList(fieldValue, orderValue);
+    const currentCoumn = this.element.querySelector(`.sortable-table__cell[data-id=${fieldValue}]`);
+    currentCoumn.dataset.order = order;
     document.body.innerHTML = this.getTemplateBody(sortedList);
   }
 
