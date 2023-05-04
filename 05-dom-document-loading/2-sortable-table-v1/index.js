@@ -8,15 +8,15 @@ export default class SortableTable {
 
   getTemplateHeader() {
     return `
-    <div data-element="header" class="sortable-table__header sortable-table__row">
-      ${this.headerConfig.map((item) => this.getHeaderData(item)).join('')}
-    </div>
+      <div data-element="header" class="sortable-table__header sortable-table__row">
+        ${this.headerConfig.map((item) => this.getHeaderData(item)).join('')}
+      </div>
     `;
   }
 
   getHeaderData(item) {
     return `
-    <div class="sortable-table__cell" data-id="title" data-sortable="true" data-order="asc">
+      <div class="sortable-table__cell" data-id="title" data-sortable="true" data-order="asc">
         <span>${item.title}</span>
         <span data-element="arrow" class="sortable-table__sort-arrow">
           <span class="sort-arrow"></span>
@@ -27,16 +27,17 @@ export default class SortableTable {
 
   getTemplateBody(sortedList) {
     const listMap = sortedList ? sortedList : this.data;
+
     return `
-    <div data-element="body" class="sortable-table__body">
-      ${listMap.map((item) => this.getBodyItem(item)).join('')}
-    </div>
+      <div data-element="body" class="sortable-table__body">
+        ${listMap.map((item) => this.getBodyItem(item)).join('')}
+      </div>
     `;
   }
 
   getBodyItem(item) {
     return `
-    <a href="/products/${item.id}" class="sortable-table__row" key=${item.id}>
+      <a href="/products/${item.id}" class="sortable-table__row" key=${item.id}>
         <div class="sortable-table__cell">
           <img class="sortable-table-image" alt="Image" src="http://magazilla.ru/jpg_zoom1/246743.jpg">
         </div>
@@ -52,8 +53,10 @@ export default class SortableTable {
   sort(fieldValue, orderValue) {
     const sortedList = this.sortList(fieldValue, orderValue);
     const currentCoumn = this.element.querySelector(`.sortable-table__cell[data-id=${fieldValue}]`);
+
     currentCoumn.dataset.order = order;
-    document.body.innerHTML = this.getTemplateBody(sortedList);
+
+    this.subElements.body.innerHTML = this.getTemplateBody(sortedList);
   }
 
   sortList(fieldValue, orderValue) {
@@ -68,7 +71,7 @@ export default class SortableTable {
       } else if (sortValue.sortType === 'string') {
         return sortWay * a[fieldValue].localeCompare(b[fieldValue], ['ru', 'en']);
       } else {
-        return null;
+        throw new Error(`error type`);
       }
     });
 
@@ -77,18 +80,36 @@ export default class SortableTable {
 
   get template() {
     return `
-    <div class="sortable-table">
-      ${this.getTemplateHeader()}
-      ${this.getTemplateBody()}
-    </div>
+      <div class="sortable-table">
+        ${this.getTemplateHeader()}
+        ${this.getTemplateBody()}
+      </div>
     `;
   }
 
-  render() {
-    const element = document.createElement('div');
-    element.innerHTML = this.template;
-    this.element = element.firstElementChild;
+
+  getSubElements(element) {
+    const result = {};
+    const elements = element.querySelectorAll('[data-element]');
+
+    for (const subElement of elements) {
+      const name = subElement.dataset.element;
+
+      result[name] = subElement;
+    }
+
+    return result;
   }
+
+  render() {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = this.template;
+    const element = wrapper.firstElementChild;
+
+    this.element = element;
+    this.subElements = this.getSubElements(element);
+  }
+
 
   remove() {
     if (this.element) {
