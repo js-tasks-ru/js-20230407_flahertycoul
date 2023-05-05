@@ -27,28 +27,33 @@ export default class SortableTable {
 
   getTemplateBody(sortedList) {
     const listMap = sortedList ? sortedList : this.data;
-
     return `
       <div data-element="body" class="sortable-table__body">
-        ${listMap.map((item) => this.getBodyItem(item)).join('')}
+        ${listMap.map((item) => this.getBodyLinks(item)).join('')}
       </div>
     `;
   }
 
-  getBodyItem(item) {
+  getBodyLinks(item) {
+
     return `
       <a href="/products/${item.id}" class="sortable-table__row" key=${item.id}>
-        <div class="sortable-table__cell">
-          <img class="sortable-table-image" alt="Image" src="http://magazilla.ru/jpg_zoom1/246743.jpg">
-        </div>
-        <div class="sortable-table__cell">${item.title}</div>
-
-        <div class="sortable-table__cell">${item.quantity}</div>
-        <div class="sortable-table__cell">${item.price}</div>
-        <div class="sortable-table__cell">${item.sales}</div>
+        ${this.getBodyLink(item)}
       </a>
     `;
   }
+
+  getBodyLink(item) {
+    const header = this.headerConfig.map(({ id, template }) => {
+      return { id, template };
+    });
+    console.log('header', header);
+    return header.map(({id, template}) => {
+      return template
+        ? template(item[id]) :
+        `<div class="sortable-table__cell">${item[id]}</div>`;
+    }).join('');
+  };
 
   sort(fieldValue, orderValue) {
     const sortedList = this.sortList(fieldValue, orderValue);
