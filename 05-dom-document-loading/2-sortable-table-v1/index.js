@@ -1,4 +1,6 @@
 export default class SortableTable {
+  element;
+  subElements;
   constructor(headerConfig = [], data = []) {
     this.headerConfig = headerConfig;
     this.data = data;
@@ -67,9 +69,7 @@ export default class SortableTable {
   sortList(fieldValue, orderValue) {
     const newData = [...this.data];
     const sortValue = this.headerConfig.find(value => value.id === fieldValue);
-
     const sortWay = (orderValue && orderValue === "desc") ? -1 : 1;
-
     const sortData = newData.sort((a, b) => {
       if (sortValue.sortType === 'number') {
         return sortWay * (a[fieldValue] - b[fieldValue]);
@@ -124,5 +124,7 @@ export default class SortableTable {
 
   destroy() {
     this.remove();
+    this.element = null;
+    this.subElements = {};
   }
 }
