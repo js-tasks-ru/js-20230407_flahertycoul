@@ -61,7 +61,7 @@ export default class SortableTable {
     const sortedList = this.sortList(fieldValue, orderValue);
     const currentCoumn = this.element.querySelector(`.sortable-table__cell[data-id=${fieldValue}]`);
 
-    currentCoumn.dataset.order = order;
+    currentCoumn.dataset.order = orderValue;
 
     this.subElements.body.innerHTML = this.getTemplateBody(sortedList);
   }
