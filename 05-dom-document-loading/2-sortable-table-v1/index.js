@@ -49,7 +49,7 @@ export default class SortableTable {
     const header = this.headerConfig.map(({ id, template }) => {
       return { id, template };
     });
-    console.log('header', header);
+
     return header.map(({id, template}) => {
       return template
         ? template(item[id]) :
