@@ -59,7 +59,6 @@ export default class SortableTable {
   }
 
   sortList(fieldValue, orderValue) {
-    console.log('this.data', this.data)
     const newData = [...this.data];
     const sortValue = this.headersConfig.find(value => value.id === fieldValue);
     const sortWay = (orderValue && orderValue === "desc") ? -1 : 1;
@@ -76,20 +75,29 @@ export default class SortableTable {
     return sortData;
   }
 
+  addRows(data) {
+    this.data = data;
+    this.subElements.body.innerHTML = this.getTemplateBody(data);
+  }
+
   renderRows(data) {
     if (data.length) {
       this.element.classList.remove('sortable-table_empty');
+      this.addRows(data);
     } else {
       this.element.classList.add('sortable-table_empty');
     }
   }
 
+  displayLoader(status) {
+    const statusLoader = status === "add" ? "add" : "remove";
+    this.element.classList[statusLoader]('sortable-table_loading');
+  }
+
   async loadData (...props) {
-    // this.showLoader();
-
+    this.displayLoader('add');
     const data = await this.load(...props);
-
-    // this.hideLoader();
+    this.displayLoader('remove');
 
     return data;
   }
@@ -112,7 +120,7 @@ export default class SortableTable {
 
   getTemplateBody(sortedList) {
     const listMap = sortedList ? sortedList : this.data;
-    console.log('sortedList', sortedList);
+
     return `
       <div data-element="body" class="sortable-table__body">
         ${listMap.map((item) => this.getBodyLinks(item)).join('')}
@@ -186,7 +194,6 @@ export default class SortableTable {
   }
 
   async updateComponent() {
-    console.log('this.sorted', this.sorted);
     const {id, order} = this.sorted;
     const data = await this.loadData(id, order);
     const chardData = Object.values(data);
@@ -201,7 +208,6 @@ export default class SortableTable {
     const rows = document.createElement('div');
 
     this.data = [...this.data, ...data];
-    console.log('this.data', this.data);
     rows.innerHTML = this.getBodyLinks(data);
 
     this.subElements.body.append(...rows.childNodes);
