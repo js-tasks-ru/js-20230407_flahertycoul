@@ -156,7 +156,6 @@ export default class SortableTable {
 
   getTemplateBody(sortedList) {
     const listMap = sortedList ? sortedList : this.data;
-
     return `
       <div data-element="body" class="sortable-table__body">
         ${listMap.map((item) => this.getBodyLinks(item)).join('')}
