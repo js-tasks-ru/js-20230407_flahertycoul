@@ -251,7 +251,7 @@ export default class SortableTable {
     this.subElements = {};
 
     if (!this.isSortLocally) {
-      document.addEventListener('scroll', this.onWindowScroll);
+      document.removeEventListener('scroll', this.onWindowScroll);
     }
   }
 }
