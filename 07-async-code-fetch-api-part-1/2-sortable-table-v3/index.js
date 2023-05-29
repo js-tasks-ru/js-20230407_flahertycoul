@@ -156,7 +156,6 @@ export default class SortableTable {
 
   getTemplateBody(sortedList) {
     const listMap = sortedList ? sortedList : this.data;
-
     return `
       <div data-element="body" class="sortable-table__body">
         ${listMap.map((item) => this.getBodyLinks(item)).join('')}
@@ -252,7 +251,7 @@ export default class SortableTable {
     this.subElements = {};
 
     if (!this.isSortLocally) {
-      document.addEventListener('scroll', this.onWindowScroll);
+      document.removeEventListener('scroll', this.onWindowScroll);
     }
   }
 }
